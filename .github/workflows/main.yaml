@@ -55,4 +55,4 @@ jobs:
         with:
           ACCESS_TOKEN: ${{ secrets.GIHUB_TOKEN }}
           BRANCH: gh-pages # This is the branch where GitHub Pages will be deployed
-          FOLDER: build
+          FOLDER: ./build
