@@ -1,58 +1,25 @@
-name: CI/CD Pipeline
-
+name: gigd-devops-github-action
 on:
   push:
     branches:
-      - main
-
+      - "main"
 jobs:
-  build:
+  build_test_deploy:
     runs-on: ubuntu-latest
-    
+    strategy:
+      matrix:
+        node-version: [15.x]
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set Up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Build Application
-        run: npm run build
-
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set Up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Run Tests
-        run: npm test
-
-  deploy:
-    needs: [build, test]
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
+      - name: Checkout
+        uses: actions/checkout@v1
+      # installer les dépendances
+      - name: Install and build
+        run: npm install && npm run build
+      # les test unitaire
+      - name: run unit test
+        run: npm run test
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@3.7.1
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          ACCESS_TOKEN: ${{ secrets.GIHUB_TOKEN }}
-          BRANCH: gh-pages # This is the branch where GitHub Pages will be deployed
-          FOLDER: ./build
+          github_token: ${{ secrets.GIHUB_KEY }}
+          publish_dir: ./build
