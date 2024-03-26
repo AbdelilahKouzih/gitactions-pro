@@ -23,5 +23,5 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GIHUB_KEY }} # Correction du nom du secret
+          github_token: ${{ secrets.GIHUB_TOKEN }} # Correction du nom du secret
           publish_dir: ./build # Correction de la syntaxe du chemin
